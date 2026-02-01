@@ -1,26 +1,167 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-  <meta http-equiv="Content-Style-Type" content="text/css">
-  <title></title>
-  <meta name="Generator" content="Cocoa HTML Writer">
-  <meta name="CocoaVersion" content="2685.1">
-  <style type="text/css">
-    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; text-align: center; font: 12.0px Arial; -webkit-text-stroke: #000000; min-height: 14.0px}
-    p.p3 {margin: 0.0px 0.0px 18.0px 0.0px; text-align: center; font: 13.0px Arial; color: #646464; -webkit-text-stroke: #646464}
-    p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; text-align: center; font: 22.0px 'Helvetica Neue'; color: #ffffff; -webkit-text-stroke: #ffffff; background-color: #fc4ca5}
-    p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; text-align: center; font: 14.0px 'Helvetica Neue'; color: #ffffff; -webkit-text-stroke: #ffffff; background-color: #343434}
-    span.s1 {font-kerning: none}
-    span.s2 {font-kerning: none; background-color: #ffffff}
-    span.s3 {font: 13.0px 'Apple Color Emoji'; font-kerning: none; background-color: #ffffff}
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Valentine?</title>
+
+<style>
+body{
+  margin:0;
+  min-height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  background:linear-gradient(135deg,#8e0038,#2b003f);
+  font-family:Arial,sans-serif;
+}
+
+.card{
+  background:white;
+  width:380px;       /* BIG CARD */
+  height:480px;      /* BIG CARD */
+  border-radius:20px;
+  padding:30px;
+  text-align:center;
+  position:relative;
+  overflow:hidden;
+  transition:0.8s ease;
+  box-shadow:0 15px 30px rgba(0,0,0,0.35);
+}
+
+h1{ margin:10px 0; }
+
+.shy-text{
+  font-size:13px;
+  color:#777;
+  margin-bottom:18px;
+}
+
+button{
+  border:none;
+  border-radius:14px;
+  cursor:pointer;
+}
+
+#yes{
+  background:hotpink;
+  color:white;
+  font-size:22px;
+  padding:12px 40px;
+  width:85%;
+}
+
+#no{
+  background:#444;
+  color:white;
+  font-size:14px;
+  padding:8px 18px;
+  position:absolute;
+}
+
+#yay-container{
+  margin-top:20px;
+  display:none;
+}
+
+#yay-text{
+  font-size:34px;
+  color:#e91e63;
+  margin-bottom:15px;
+}
+
+#yay-gif{
+  width:100%;
+  max-width:260px;
+  border-radius:14px;
+}
+
+/* CLASSIC SPARKLES – 5 SECONDS */
+.spark{
+  position:absolute;
+  width:6px;
+  height:6px;
+  border-radius:50%;
+  background:radial-gradient(circle, #ffffff, #ffd700);
+  opacity:1;
+  animation:sparkFade 5s ease-out forwards;
+  pointer-events:none;
+}
+
+@keyframes sparkFade{
+  to{
+    transform:scale(0.2);
+    opacity:0;
+  }
+}
+</style>
 </head>
+
 <body>
-<p class="p1"><span class="s1"></span><br></p>
-<h1 style="margin: 0.0px 0.0px 10.0px 0.0px; text-align: center; font: 24.0px Arial; -webkit-text-stroke: #000000"><span class="s2"><b>Fetha, Will you be my Valentine?</b><b></b></span></h1>
-<p class="p3"><span class="s2">"NO" seems a little shy </span><span class="s3">🙈🫣</span></p>
-<p class="p4"><span class="s1">YES</span></p>
-<p class="p5"><span class="s1">NO</span></p>
+
+<div class="card" id="card">
+
+  <h1>Fetha, Will you be my Valentine?</h1>
+  <p class="shy-text">"NO" seems a little shy 🙈🫣</p>
+
+  <div id="buttons">
+    <button id="yes">YES</button>
+    <button id="no">NO</button>
+  </div>
+
+  <div id="yay-container">
+    <div id="yay-text">YAY💖</div>
+    <img id="yay-gif"
+      src="https://media.giphy.com/media/26ufdipQqU2lhNA4g/giphy.gif"
+      alt="Mind Blown GIF">
+  </div>
+</div>
+
+<script>
+const card = document.getElementById("card");
+const yesBtn = document.getElementById("yes");
+const noBtn = document.getElementById("no");
+const buttons = document.getElementById("buttons");
+const yay = document.getElementById("yay-container");
+
+let yesSize = 22;
+
+// Move NO
+function moveNo(){
+  const rect = card.getBoundingClientRect();
+  const maxX = rect.width - noBtn.offsetWidth - 10;
+  const maxY = rect.height - noBtn.offsetHeight - 10;
+  noBtn.style.left = Math.random()*maxX + "px";
+  noBtn.style.top = Math.random()*maxY + "px";
+}
+setInterval(moveNo, 700);
+
+// Grow YES
+noBtn.addEventListener("mouseover", ()=>{
+  yesSize += 3;
+  yesBtn.style.fontSize = yesSize + "px";
+});
+
+// Sparkles all over the card for 5 seconds
+function sparkleCard(){
+  const rect = card.getBoundingClientRect();
+  for(let i=0;i<100;i++){
+    const s = document.createElement("div");
+    s.className = "spark";
+    s.style.left = Math.random()*rect.width + "px";
+    s.style.top = Math.random()*rect.height + "px";
+    card.appendChild(s);
+
+    setTimeout(()=>s.remove(),5000);
+  }
+}
+
+yesBtn.addEventListener("click", ()=>{
+  buttons.style.display = "none";
+  yay.style.display = "block";
+  sparkleCard();
+});
+</script>
+
 </body>
 </html>
